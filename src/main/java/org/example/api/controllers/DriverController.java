@@ -4,6 +4,7 @@ import org.example.tables.models.Driver;
 import org.example.tables.models.RequestHistory;
 import org.example.tables.models.User;
 import org.example.tables.services.DriverService;
+import org.example.tables.services.RequestHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class DriverController {
     @Autowired
     private final DriverService driverService;
     private RequestHistory requestHistory;
+
+    @Autowired
+    private RequestHistoryService rhs;
 
     public DriverController (DriverService driverService) {
         this.driverService = driverService;
@@ -36,18 +40,18 @@ public class DriverController {
             // have to do a spellcheck in the sql table!!!
 
             requestHistory.setResult("UNATHORIZED");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         if(success) {
             requestHistory.setResult("CREATED");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(driver);
         } else {
             requestHistory.setResult("BAD REQUEST");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -68,18 +72,18 @@ public class DriverController {
             // have to do a spellcheck in the sql table!!!
 
             requestHistory.setResult("UNATHORIZED");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         if(driver != null) {
             requestHistory.setResult("OK");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.OK).body(driver);
         } else {
             requestHistory.setResult("NOT FOUND");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -98,18 +102,18 @@ public class DriverController {
             // have to do a spellcheck in the sql table!!!
 
             requestHistory.setResult("UNATHORIZED");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         if(drivers != null) {
             requestHistory.setResult("OK");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.OK).body(drivers);
         } else {
             requestHistory.setResult("NOT FOUND");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -129,18 +133,18 @@ public class DriverController {
             // have to do a spellcheck in the sql table!!!
 
             requestHistory.setResult("UNATHORIZED");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         if(success) {
             requestHistory.setResult("OK");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
             requestHistory.setResult("NOT FOUND");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -160,18 +164,19 @@ public class DriverController {
             // have to do a spellcheck in the sql table!!!
 
             requestHistory.setResult("UNATHORIZED");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
+
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         if(isDone) {
             requestHistory.setResult("OK");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
             requestHistory.setResult("NOT FOUND");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

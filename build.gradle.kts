@@ -19,7 +19,6 @@ dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-web")
     implementation ("org.springframework.boot:spring-boot-starter-jdbc")
     implementation ("com.google.maps:google-maps-services:2.1.2")
-    implementation("org.slf4j:slfj4-simple:1.7.25")
 }
 
 tasks.test {

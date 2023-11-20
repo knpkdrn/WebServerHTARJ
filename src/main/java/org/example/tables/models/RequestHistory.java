@@ -44,8 +44,8 @@ public class RequestHistory {
         requestTime = dtf.format(now);
     }
 
-    public void uploadRequest() {
+    /*public void uploadRequest() {
         RequestHistoryService rhs = new RequestHistoryService();
         rhs.save(this);
-    }
+    }*/
 }

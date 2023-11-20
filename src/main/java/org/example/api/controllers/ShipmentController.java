@@ -1,8 +1,10 @@
 package org.example.api.controllers;
 
+import org.example.api.googlemaps.GoogleAPIController;
 import org.example.tables.models.RequestHistory;
 import org.example.tables.models.Shipment;
 import org.example.tables.models.Vehicle;
+import org.example.tables.services.RequestHistoryService;
 import org.example.tables.services.ShipmentService;
 import org.example.tables.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,10 @@ import java.util.List;
 public class ShipmentController {
     @Autowired
     private final ShipmentService shipmentService;
-    private RequestHistory requestHistory;
+    private RequestHistory requestHistory = new RequestHistory();
+
+    @Autowired
+    private RequestHistoryService rhs;
     public ShipmentController(ShipmentService shipmentService) {
         this.shipmentService = shipmentService;
     }
@@ -52,12 +57,12 @@ public class ShipmentController {
 
         if(shipment != null) {
             requestHistory.setResult("OK");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.OK).body(shipment);
         } else {
             requestHistory.setResult("NOT FOUND");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -74,12 +79,36 @@ public class ShipmentController {
 
         if(shipments != null) {
             requestHistory.setResult("OK");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.OK).body(shipments);
         } else {
             requestHistory.setResult("NOT FOUND");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+    }
+
+    /** GET all shipment */
+    @GetMapping("{apiKey}/getAllSorted")
+    public ResponseEntity<List<Shipment>> getAllShipmentSorted(@PathVariable String apiKey) {
+        List<Shipment> shipmentsBase = shipmentService.getAll();
+        List<Shipment> shipments = GoogleAPIController.Calculate(shipmentsBase);
+
+        requestHistory.setRequestKey(apiKey);
+        requestHistory.setRequestTime();
+        requestHistory.setRequestType("GET");
+
+        if(shipments != null) {
+            requestHistory.setResult("OK");
+            rhs.save(requestHistory);
+
+            return ResponseEntity.status(HttpStatus.OK).body(shipments);
+        } else {
+            requestHistory.setResult("NOT FOUND");
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -97,12 +126,12 @@ public class ShipmentController {
 
         if(success) {
             requestHistory.setResult("OK");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
             requestHistory.setResult("NOT FOUND");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -119,12 +148,12 @@ public class ShipmentController {
 
         if(isDone) {
             requestHistory.setResult("OK");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
             requestHistory.setResult("NOT FOUND");
-            requestHistory.uploadRequest();
+            rhs.save(requestHistory);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

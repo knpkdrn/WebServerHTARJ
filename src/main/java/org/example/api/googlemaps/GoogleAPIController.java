@@ -15,13 +15,11 @@ public class GoogleAPIController {
     private static final String API_KEY = "AIzaSyCEhRZDgXI2xYen-eEvRzOj36Kp8r9HO4o";
     public static String ORIGIN = "";
     public static String WAYPOINTS = "";
-    public static void Calculate(){
-        ShipmentService shipmentService = new ShipmentService();
-        List<Shipment> shipments = shipmentService.getAll();
+    public static List<Shipment> Calculate(List<Shipment> shipments){
         List<Shipment> orderedShipments = new ArrayList<>();
 
         ORIGIN = shipments.get(0).getOrigin();
-        WAYPOINTS += shipments.get(0).getDestination();
+        WAYPOINTS = shipments.get(0).getDestination();
         for (int i=1; i<shipments.size();++i){
             WAYPOINTS += "|" + shipments.get(i).getDestination();
         }
@@ -39,11 +37,14 @@ public class GoogleAPIController {
             DirectionsResult result = request.await();
             int[] waypointOrder = result.routes[0].waypointOrder;
 
-            for (int i = 0; i<waypointOrder.length; ++i)
-            orderedShipments.add(shipments.get(i));
+            for (int i = 0; i<waypointOrder.length; ++i) {
+                orderedShipments.add(shipments.get(waypointOrder[i]));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return orderedShipments;
     }
 }
