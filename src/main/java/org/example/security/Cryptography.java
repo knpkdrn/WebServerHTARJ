@@ -30,6 +30,6 @@ public class Cryptography {
     }
 
     public static String decryptDataInRest(String data) {
-
+        return "NaN";
     }
 }
