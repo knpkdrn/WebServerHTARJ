@@ -53,6 +53,32 @@ public class ShipmentService {
         return  jdbcTemplate.query(sql, new ShipmentRowMapper());
     }
 
+    public List<Shipment> getScheduled() {
+        String shipment_status = "scheduled";
+
+        String sql = "select * from shipment where shipment_status = ?";
+        return  jdbcTemplate.query(sql, new ShipmentRowMapper(), shipment_status);
+    }
+
+    public boolean updateToEnRoute() {
+        String enroute = "enroute";
+        String scheduled = "scheduled";
+
+        String sql = "update shipment set shipment_status = ? where shipment_status = ?";
+
+        try {
+
+            int affectedRows = jdbcTemplate.update(sql, enroute, scheduled);
+            return (affectedRows > 0);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public boolean deleteById(int shipmentId) {
         String sql = "delete from shipment where shipment_id = ?";
 

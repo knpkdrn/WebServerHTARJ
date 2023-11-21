@@ -16,6 +16,8 @@ public class GoogleAPIController {
     public static String ORIGIN = "";
     public static String WAYPOINTS = "";
     public static List<Shipment> Calculate(List<Shipment> shipments){
+        if(shipments == null || shipments.isEmpty()) return new ArrayList<>();
+
         List<Shipment> orderedShipments = new ArrayList<>();
 
         ORIGIN = shipments.get(0).getOrigin();

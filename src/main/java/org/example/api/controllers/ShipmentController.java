@@ -91,11 +91,35 @@ public class ShipmentController {
 
     }
 
-    /** GET all shipment */
+    /** GET scheduled shipment */
+    @GetMapping("{apiKey}/getScheduled")
+    public ResponseEntity<List<Shipment>> getScheduledShipment(@PathVariable String apiKey) {
+        List<Shipment> shipments = shipmentService.getScheduled();
+
+        requestHistory.setRequestKey(apiKey);
+        requestHistory.setRequestTime();
+        requestHistory.setRequestType("GET");
+
+        if(shipments != null) {
+            requestHistory.setResult("OK");
+            rhs.save(requestHistory);
+
+            return ResponseEntity.status(HttpStatus.OK).body(shipments);
+        } else {
+            requestHistory.setResult("NOT FOUND");
+            rhs.save(requestHistory);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+    }
+
+    /** GET sorted by route shipment */
     @GetMapping("{apiKey}/getAllSorted")
     public ResponseEntity<List<Shipment>> getAllShipmentSorted(@PathVariable String apiKey) {
-        List<Shipment> shipmentsBase = shipmentService.getAll();
+        List<Shipment> shipmentsBase = shipmentService.getScheduled();
         List<Shipment> shipments = GoogleAPIController.Calculate(shipmentsBase);
+        shipmentService.updateToEnRoute();
 
         requestHistory.setRequestKey(apiKey);
         requestHistory.setRequestTime();
