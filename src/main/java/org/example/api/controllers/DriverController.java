@@ -55,7 +55,6 @@ public class DriverController {
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
     }
 
     /** GET driver by DriverId */
@@ -180,7 +179,6 @@ public class DriverController {
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
     }
 
 }

@@ -57,7 +57,6 @@ public class CustomerController {
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
     }
 
     /** GET customer by CustomerID */
@@ -120,7 +119,6 @@ public class CustomerController {
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
     }
 
     /** DELETE customer by customerId*/
@@ -183,6 +181,5 @@ public class CustomerController {
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
     }
 }

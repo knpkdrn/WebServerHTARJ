@@ -25,6 +25,9 @@ public class KeyGen {
         String encodedPublicKey = Base64.getEncoder().encodeToString(puKey.getEncoded());
         String encodedPrivateKey = Base64.getEncoder().encodeToString(prKey.getEncoded());
 
+        Cryptography.setPrivateKeyRSA(encodedPrivateKey);
+        Cryptography.setPublicKeyRSA(encodedPublicKey);
+
         System.out.println("Public key: " + encodedPublicKey);
         System.out.println("Private key: " + encodedPrivateKey);
     }
@@ -34,9 +37,21 @@ public class KeyGen {
         keyGen.init(256);
 
         SecretKey secretKey = keyGen.generateKey();
-
+        Cryptography.setAESKey(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
         String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+        System.out.println(encodedKey);
     }
+
+    public static void generateAES(int i) throws NoSuchAlgorithmException {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(256);
+
+        SecretKey secretKey = keyGen.generateKey();
+        Cryptography.setMasterAESKey(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
+        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+        System.out.println(encodedKey);
+    }
+
 
     public static String generateApiKey(List<User> users) {
         Boolean unique = true;

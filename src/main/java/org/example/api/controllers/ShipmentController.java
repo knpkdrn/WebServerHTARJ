@@ -1,12 +1,11 @@
 package org.example.api.controllers;
 
-import org.example.api.googlemaps.GoogleAPIController;
+import org.example.api.controllers.googlemaps.GoogleAPIController;
 import org.example.tables.models.RequestHistory;
 import org.example.tables.models.Shipment;
-import org.example.tables.models.Vehicle;
+import org.example.tables.models.User;
 import org.example.tables.services.RequestHistoryService;
 import org.example.tables.services.ShipmentService;
-import org.example.tables.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +37,11 @@ public class ShipmentController {
 
         if(success) {
             requestHistory.setResult("CREATED");
+            rhs.save(requestHistory);
             return ResponseEntity.status(HttpStatus.CREATED).body(shipment);
         } else {
             requestHistory.setResult("BAD REQUEST");
+            rhs.save(requestHistory);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
@@ -54,6 +55,15 @@ public class ShipmentController {
         requestHistory.setRequestKey(apiKey);
         requestHistory.setRequestTime();
         requestHistory.setRequestType("GET");
+
+        if(User.CheckIfAdmin(apiKey)) {
+
+            // have to do a spellcheck in the sql table!!!
+
+            requestHistory.setResult("UNATHORIZED");
+            rhs.save(requestHistory);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         if(shipment != null) {
             requestHistory.setResult("OK");

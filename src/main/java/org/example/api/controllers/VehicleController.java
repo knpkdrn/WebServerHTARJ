@@ -20,7 +20,6 @@ public class VehicleController {
     @Autowired
     private final VehicleService vehicleService;
     private RequestHistory requestHistory;
-
     @Autowired
     private RequestHistoryService rhs;
 
