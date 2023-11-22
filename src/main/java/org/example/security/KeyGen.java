@@ -47,6 +47,7 @@ public class KeyGen {
         keyGen.init(256);
 
         SecretKey secretKey = keyGen.generateKey();
+
         Cryptography.setMasterAESKey(Base64.getEncoder().encodeToString(secretKey.getEncoded()));
         String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
         System.out.println(encodedKey);

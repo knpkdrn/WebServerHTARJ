@@ -14,16 +14,39 @@ public class KeyStorage {
             String line;
             while((line = bufferedReader.readLine()) != null) {
                 if(line.startsWith("privateKey=")) {
+                    line = line.substring(11);
+                    String[] lineSplit = line.split(";");
+                    byte[] byteArray = new byte[lineSplit.length];
 
-                    decryptedKey = Cryptography.decryptKeyFromByteArrayToRest(line.substring(11));
+                    for (int i = 0; i < lineSplit.length; ++i) {
+                        byteArray[i] = Byte.parseByte(lineSplit[i]);
+                    }
+
+                    decryptedKey = Cryptography.decryptKeyFromByteArrayToRest(byteArray);
                     Cryptography.setPrivateKeyRSA(decryptedKey);
                 } else if(line.startsWith("publicKey=")) {
 
-                    decryptedKey = Cryptography.decryptKeyFromByteArrayToRest(line.substring(10));
+                    line = line.substring(10);
+                    String[] lineSplit = line.split(";");
+                    byte[] byteArray = new byte[lineSplit.length];
+
+                    for (int i = 0; i < lineSplit.length; ++i) {
+                        byteArray[i] = Byte.parseByte(lineSplit[i]);
+                    }
+
+                    decryptedKey = Cryptography.decryptKeyFromByteArrayToRest(byteArray);
                     Cryptography.setPublicKeyRSA(decryptedKey);
                 } else if(line.startsWith("aesKey=")) {
 
-                    decryptedKey = Cryptography.decryptKeyFromByteArrayToRest(line.substring(7));
+                    line = line.substring(7);
+                    String[] lineSplit = line.split(";");
+                    byte[] byteArray = new byte[lineSplit.length];
+
+                    for (int i = 0; i < lineSplit.length; ++i) {
+                        byteArray[i] = Byte.parseByte(lineSplit[i]);
+                    }
+
+                    decryptedKey = Cryptography.decryptKeyFromByteArrayToRest(byteArray);
                     Cryptography.setAESKey(decryptedKey);
                 }
             }
@@ -60,8 +83,9 @@ public class KeyStorage {
             stringBuilder = new StringBuilder();
             stringBuilder.append("privateKey=");
             for (byte b: encryptedPrivateKey) {
-                stringBuilder.append(b);
+                stringBuilder.append(b + ";");
             }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
             bufferedWriter.write((stringBuilder.toString()));
             bufferedWriter.newLine();
 
@@ -69,8 +93,9 @@ public class KeyStorage {
             stringBuilder = new StringBuilder();
             stringBuilder.append("publicKey=");
             for (byte b: encryptedPublicKey) {
-                stringBuilder.append(b);
+                stringBuilder.append(b + ";");
             }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
             bufferedWriter.write((stringBuilder.toString()));
             bufferedWriter.newLine();
 
@@ -78,8 +103,9 @@ public class KeyStorage {
             stringBuilder = new StringBuilder();
             stringBuilder.append("aesKey=");
             for (byte b: encryptedAESKey) {
-                stringBuilder.append(b);
+                stringBuilder.append(b + ";");
             }
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
             bufferedWriter.write((stringBuilder.toString()));
             bufferedWriter.newLine();
         }

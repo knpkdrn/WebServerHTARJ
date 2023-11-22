@@ -184,7 +184,7 @@ public class Cryptography {
 
         for(int i = 0; i < key.length; ++i) {
 
-            if(i % 2 == 0){
+            if(i % 2 != 0){
                 if(firstPartInQ.peek() != null){
                     key[i] = firstPartInQ.poll();
                 }
@@ -197,6 +197,7 @@ public class Cryptography {
         }
 
         // creating the String key from the key array
+        String asd = Base64.getEncoder().encodeToString(key);
         masterKeyAES = Base64.getEncoder().encodeToString(key);
     }
 
