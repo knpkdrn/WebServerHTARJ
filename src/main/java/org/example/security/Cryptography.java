@@ -5,9 +5,11 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.*;
+//import javax.xml.bind.DatatypeConverter;
 
 public class Cryptography {
 
@@ -58,14 +60,10 @@ public class Cryptography {
 
 
     public static String encryptDataInRest(String data) throws Exception {
-
-        while (data.length() % 4 != 0) {
-
-            data += "X";
-        }
+        data = DatatypeConverter.printBase64Binary(data.getBytes());
 
         byte[] keyBytes = Base64.getDecoder().decode(keyForRestAES);
-        byte[] dataBytes = Base64.getDecoder().decode(data);
+        byte[] dataBytes = DatatypeConverter.parseBase64Binary(data);
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
 
         Cipher cipher = Cipher.getInstance("AES");
@@ -77,14 +75,16 @@ public class Cryptography {
 
     public static String decryptDataInRest(String data) throws Exception {
         byte[] keyBytes = Base64.getDecoder().decode(keyForRestAES);
-        byte[] dataBytes = Base64.getDecoder().decode(data);
+        byte[] dataBytes = DatatypeConverter.parseBase64Binary(data);
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
 
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         byte[] decryptedBytes = cipher.doFinal(dataBytes);
 
-        return Base64.getEncoder().encodeToString(decryptedBytes);
+        data = Base64.getEncoder().encodeToString(decryptedBytes);
+
+        return new String(DatatypeConverter.parseBase64Binary(data));
     }
 
     public static byte[] encryptKeysAsByteArrayToRest(String data) throws Exception {
