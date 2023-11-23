@@ -1,7 +1,10 @@
 package org.example;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import org.example.security.Cryptography;
@@ -18,7 +21,21 @@ public class Main {
         SpringApplication app = new SpringApplication(Main.class);
         ConfigurableApplicationContext context = app.run(args);
         try {
-            KeyStorage.getMasterKeyFromFiles();
+            if (Files.exists(Paths.get("this_is_definitely_not_the_first_part_of_the_master_key.dat")) &&
+                    Files.exists(Paths.get("this_is_definitely_not_the_second_part_of_the_master_key.dat"))){
+                KeyStorage.getMasterKeyFromFiles();
+                System.out.println(LocalDateTime.now() + ": Master key is forged.");
+            }
+            else {
+                System.out.println(LocalDateTime.now() + ": Master key does not exist yet.");
+            }
+            if (Files.exists(Paths.get("these_are_not_the_keys_you_are_looking_for.dat"))){
+                KeyStorage.getKeys();
+                System.out.println(LocalDateTime.now() + ": Keys are forged");
+            }
+            else {
+                System.out.println(LocalDateTime.now() + ": Keys do not exist yet.");
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

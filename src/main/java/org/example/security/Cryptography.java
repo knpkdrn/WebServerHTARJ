@@ -6,7 +6,12 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.util.*;
 //import javax.xml.bind.DatatypeConverter;
@@ -80,6 +85,41 @@ public class Cryptography {
 
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        byte[] decryptedBytes = cipher.doFinal(dataBytes);
+
+        data = Base64.getEncoder().encodeToString(decryptedBytes);
+
+        return new String(DatatypeConverter.parseBase64Binary(data));
+    }
+
+    public static String encryptDataInTransit(String data) throws Exception {
+        data = DatatypeConverter.printBase64Binary(data.getBytes());
+
+        byte[] keyBytes = Base64.getDecoder().decode(publicKeyRSA);
+
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PublicKey publicKey = keyFactory.generatePublic(keySpec);
+
+        byte[] dataBytes = DatatypeConverter.parseBase64Binary(data);
+
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        byte[] encryptedBytes = cipher.doFinal(dataBytes);
+
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+
+    public static String decryptDataInTransit(String data) throws Exception {
+        byte[] keyBytes = Base64.getDecoder().decode(privateKeyRSA);
+        byte[] dataBytes = DatatypeConverter.parseBase64Binary(data);
+
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
         byte[] decryptedBytes = cipher.doFinal(dataBytes);
 
         data = Base64.getEncoder().encodeToString(decryptedBytes);
@@ -201,15 +241,12 @@ public class Cryptography {
         }
 
         // creating the String key from the key array
-        String asd = Base64.getEncoder().encodeToString(key);
         masterKeyAES = Base64.getEncoder().encodeToString(key);
-
-        System.out.println(LocalDateTime.now() + ": Master key is forged.");
     }
 
     public static void printKeys(){
         System.out.println("AES key: " + keyForRestAES);
-        System.out.println("Master Key:" + masterKeyAES);
+        System.out.println("Master Key: " + masterKeyAES);
         System.out.println("Public key: " + publicKeyRSA);
         System.out.println("Private key: " + privateKeyRSA);
     }
