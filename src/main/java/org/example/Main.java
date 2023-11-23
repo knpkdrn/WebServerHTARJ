@@ -17,7 +17,11 @@ public class Main {
 
         SpringApplication app = new SpringApplication(Main.class);
         ConfigurableApplicationContext context = app.run(args);
-
+        try {
+            KeyStorage.getMasterKeyFromFiles();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // listening to user input
         new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
@@ -61,9 +65,16 @@ public class Main {
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
-                } else if("frg master".equalsIgnoreCase(input)) {
+                } else if("crt user".equalsIgnoreCase(input)) {
+
+                } else {
+                    System.out.println("input: " + input);
                     try {
-                        KeyStorage.getMasterKeyFromFiles();
+                        input = Cryptography.encryptDataInRest(input);
+                        System.out.println("encrypted input: " + input);
+
+                        input = Cryptography.decryptDataInRest(input);
+                        System.out.println("decrypted input: " + input);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

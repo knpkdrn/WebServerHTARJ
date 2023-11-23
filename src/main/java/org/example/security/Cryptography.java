@@ -6,6 +6,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Cryptography {
@@ -57,27 +58,33 @@ public class Cryptography {
 
 
     public static String encryptDataInRest(String data) throws Exception {
+
+        while (data.length() % 4 != 0) {
+
+            data += "X";
+        }
+
         byte[] keyBytes = Base64.getDecoder().decode(keyForRestAES);
+        byte[] dataBytes = Base64.getDecoder().decode(data);
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
 
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-
-        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
+        byte[] encryptedBytes = cipher.doFinal(dataBytes);
 
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
-    public static String encryptKeysInRest(String data) throws Exception {
-        byte[] keyBytes = Base64.getDecoder().decode(masterKeyAES);
+    public static String decryptDataInRest(String data) throws Exception {
+        byte[] keyBytes = Base64.getDecoder().decode(keyForRestAES);
+        byte[] dataBytes = Base64.getDecoder().decode(data);
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
 
         Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        byte[] decryptedBytes = cipher.doFinal(dataBytes);
 
-        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
-
-        return Base64.getEncoder().encodeToString(encryptedBytes);
+        return Base64.getEncoder().encodeToString(decryptedBytes);
     }
 
     public static byte[] encryptKeysAsByteArrayToRest(String data) throws Exception {
@@ -106,7 +113,6 @@ public class Cryptography {
         return Base64.getEncoder().encodeToString(decryptedKey);
     }
 
-
     public static String decryptKeyFromByteArrayToRest(byte[] encryptedKey) throws Exception {
         byte[] keyBytes = Base64.getDecoder().decode(masterKeyAES);
         SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
@@ -118,8 +124,6 @@ public class Cryptography {
 
         return Base64.getEncoder().encodeToString(decryptedKey);
     }
-
-
 
     public static String[] splitAESKeyForStoringAsStringArray() {
         byte[] aesInBytes = Base64.getDecoder().decode(keyForRestAES);
@@ -199,6 +203,8 @@ public class Cryptography {
         // creating the String key from the key array
         String asd = Base64.getEncoder().encodeToString(key);
         masterKeyAES = Base64.getEncoder().encodeToString(key);
+
+        System.out.println(LocalDateTime.now() + ": Master key is forged.");
     }
 
     public static void printKeys(){
