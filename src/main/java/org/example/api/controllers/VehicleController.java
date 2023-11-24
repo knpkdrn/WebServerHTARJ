@@ -1,9 +1,7 @@
 package org.example.api.controllers;
 
-import org.example.tables.models.RequestHistory;
 import org.example.tables.models.User;
 import org.example.tables.models.Vehicle;
-import org.example.tables.services.RequestHistoryService;
 import org.example.tables.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

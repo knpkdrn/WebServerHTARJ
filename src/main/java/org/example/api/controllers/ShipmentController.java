@@ -1,14 +1,13 @@
 package org.example.api.controllers;
 
 import org.example.api.controllers.googlemaps.GoogleAPIController;
-import org.example.tables.models.RequestHistory;
 import org.example.tables.models.Shipment;
 import org.example.tables.models.User;
-import org.example.tables.services.RequestHistoryService;
 import org.example.tables.services.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.SerializationUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,7 +63,9 @@ public class ShipmentController {
     /** GET all shipment */
     @GetMapping("/getAllSorted")
     public ResponseEntity<List<Shipment>> getAllShipmentSorted() {
-        List<Shipment> shipmentsBase = shipmentService.getAll();
+        List<Shipment> shipmentsBase = shipmentService.getByShipmentStatus("scheduled");
+        if (shipmentsBase == null || shipmentsBase.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        shipmentService.updateShipmentStatusByOldStatus("scheduled", "enroute");
         List<Shipment> shipments = GoogleAPIController.Calculate(shipmentsBase);
 
         if(shipments != null) {
