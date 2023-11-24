@@ -21,7 +21,6 @@ public class KeyGen {
 
 
         // Encode for printing out
-
         String encodedPublicKey = Base64.getEncoder().encodeToString(puKey.getEncoded());
         String encodedPrivateKey = Base64.getEncoder().encodeToString(prKey.getEncoded());
 

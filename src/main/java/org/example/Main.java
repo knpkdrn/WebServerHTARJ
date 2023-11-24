@@ -10,16 +10,22 @@ import java.util.Scanner;
 import org.example.security.Cryptography;
 import org.example.security.KeyGen;
 import org.example.security.KeyStorage;
+import org.example.services.EmailService;
+import org.example.tables.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.boot.SpringApplication;
 
 @SpringBootApplication
 public class Main {
+
     public static void main(String[] args) throws IOException {
 
         SpringApplication app = new SpringApplication(Main.class);
         ConfigurableApplicationContext context = app.run(args);
+        EmailService emailService = context.getBean(EmailService.class);
+
         try {
             if (Files.exists(Paths.get("this_is_definitely_not_the_first_part_of_the_master_key.dat")) &&
                     Files.exists(Paths.get("this_is_definitely_not_the_second_part_of_the_master_key.dat"))){
@@ -82,7 +88,23 @@ public class Main {
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
-                } else if("crt user".equalsIgnoreCase(input)) {
+                }  else if ("crt user".equalsIgnoreCase(input)) {
+                    User user = new User();
+                    System.out.print("email: ");
+                    user.setEmail(scanner.nextLine());
+                    System.out.print("isAdmin: ");
+                    input = scanner.nextLine();
+                    if("false".equalsIgnoreCase(input)) {
+                        user.setIsAdmin(false);
+                    } else if("true".equalsIgnoreCase(input)) {
+                        user.setIsAdmin(true);
+                    }
+                    input = user.generatePassword();
+                    System.out.print("password: " + input);
+                    user.setPassword(input);
+                    System.out.println();
+
+                    emailService.sendEmail(user.getEmail(), user.getPassword());
 
                 } else {
                     System.out.println("input: " + input);
@@ -92,6 +114,7 @@ public class Main {
 
                         input = Cryptography.decryptDataInRest(input);
                         System.out.println("decrypted input: " + input);
+
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

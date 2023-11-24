@@ -14,173 +14,76 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/vehicles/")
+@RequestMapping("/api/vehicles")
 public class VehicleController {
 
     @Autowired
     private final VehicleService vehicleService;
-    private RequestHistory requestHistory;
-    @Autowired
-    private RequestHistoryService rhs;
+
 
     public VehicleController(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
 
     /** POST vehicle */
-    @PostMapping("{apiKey}")
-    public ResponseEntity<Vehicle> postVehicle(@RequestBody Vehicle vehicle, @PathVariable String apiKey) {
+    @PostMapping
+    public ResponseEntity<Vehicle> postVehicle(@RequestBody Vehicle vehicle) {
         boolean success = vehicleService.save(vehicle);
 
-        requestHistory.setRequestKey(apiKey);
-        requestHistory.setRequestTime();
-        requestHistory.setRequestType("POST");
-
-        if(!User.CheckIfAdmin(apiKey)) {
-
-            // have to do a spellcheck in the sql table!!!
-
-            requestHistory.setResult("UNATHORIZED");
-            rhs.save(requestHistory);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        if(success) {
-            requestHistory.setResult("CREATED");
-            rhs.save(requestHistory);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(vehicle);
-        } else {
-            requestHistory.setResult("BAD REQUEST");
-            rhs.save(requestHistory);
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+       if(success) {
+           return ResponseEntity.status(HttpStatus.CREATED).body(vehicle);
+       } else {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+       }
 
     }
 
     /** GET vehicle by license_plate */
-    @GetMapping("{apiKey}/licensePlate/{licensePlate}")
-    public ResponseEntity<Vehicle> getVehicle(@PathVariable String licensePlate, @PathVariable String apiKey) {
+    @GetMapping("/licensePlate/{licensePlate}")
+    public ResponseEntity<Vehicle> getVehicle(@PathVariable String licensePlate) {
         Vehicle vehicle = vehicleService.getById(licensePlate);
 
-        requestHistory.setRequestKey(apiKey);
-        requestHistory.setRequestTime();
-        requestHistory.setRequestType("GET");
-
-        if(!User.CheckIfAdmin(apiKey)) {
-
-            // have to do a spellcheck in the sql table!!!
-
-            requestHistory.setResult("UNATHORIZED");
-            rhs.save(requestHistory);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
         if(vehicle != null) {
-            requestHistory.setResult("OK");
-            rhs.save(requestHistory);
-
             return ResponseEntity.status(HttpStatus.OK).body(vehicle);
         } else {
-            requestHistory.setResult("NOT FOUND");
-            rhs.save(requestHistory);
-
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     /** GET all vehicles */
     @GetMapping("{apiKey}/getAll")
-    public ResponseEntity<List<Vehicle>> getAllVehicle(@PathVariable String apiKey) {
+    public ResponseEntity<List<Vehicle>> getAllVehicle() {
         List<Vehicle> vehicles = vehicleService.getAll();
 
-        requestHistory.setRequestKey(apiKey);
-        requestHistory.setRequestTime();
-        requestHistory.setRequestType("GET");
-
-        if(!User.CheckIfAdmin(apiKey)) {
-
-            // have to do a spellcheck in the sql table!!!
-
-            requestHistory.setResult("UNATHORIZED");
-            rhs.save(requestHistory);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
         if(vehicles != null) {
-            requestHistory.setResult("OK");
-            rhs.save(requestHistory);
-
             return ResponseEntity.status(HttpStatus.OK).body(vehicles);
         } else {
-            requestHistory.setResult("NOT FOUND");
-            rhs.save(requestHistory);
-
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
     }
 
     /** DELETE vehicle by licensePlate */
-    @DeleteMapping("{apiKey}/licensePlate/{licensePlate}")
-    public ResponseEntity<Vehicle> deleteVehicle(@PathVariable String licensePlate, @PathVariable String apiKey) {
+    @DeleteMapping("/licensePlate/{licensePlate}")
+    public ResponseEntity<Vehicle> deleteVehicle(@PathVariable String licensePlate) {
         boolean success = vehicleService.deleteById(licensePlate);
 
-        requestHistory.setRequestKey(apiKey);
-        requestHistory.setRequestTime();
-        requestHistory.setRequestType("DELETE");
-
-        if(!User.CheckIfAdmin(apiKey)) {
-
-            // have to do a spellcheck in the sql table!!!
-
-            requestHistory.setResult("UNATHORIZED");
-            rhs.save(requestHistory);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
         if(success) {
-            requestHistory.setResult("OK");
-            rhs.save(requestHistory);
-
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
-            requestHistory.setResult("NOT FOUND");
-            rhs.save(requestHistory);
-
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     /** DELETE all vehicles */
-    @DeleteMapping("{apiKey}/deleteAll")
-    public ResponseEntity<Vehicle> deleteAllVehicle(@PathVariable String apiKey) {
+    @DeleteMapping("/deleteAll")
+    public ResponseEntity<Vehicle> deleteAllVehicle() {
         boolean isDone = vehicleService.deleteAll();
 
-        requestHistory.setRequestKey(apiKey);
-        requestHistory.setRequestTime();
-        requestHistory.setRequestType("DELETE");
-
-        if(!User.CheckIfAdmin(apiKey)) {
-
-            // have to do a spellcheck in the sql table!!!
-
-            requestHistory.setResult("UNATHORIZED");
-            rhs.save(requestHistory);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
         if(isDone) {
-            requestHistory.setResult("OK");
-            rhs.save(requestHistory);
-
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
-            requestHistory.setResult("NOT FOUND");
-            rhs.save(requestHistory);
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

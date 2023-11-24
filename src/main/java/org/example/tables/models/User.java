@@ -2,6 +2,11 @@ package org.example.tables.models;
 
 import org.example.tables.services.UserService;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class User {
     private String apiKey;
     private String password;
@@ -32,6 +37,22 @@ public class User {
     }
     public String getApiKey() {
         return apiKey;
+    }
+
+    public String generatePassword() {
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = upper.toLowerCase();
+        String digits = "0123456789";
+        String specialChar = "/.?&";
+        String allowedChars = upper + lower + digits + specialChar;
+        int length = 7;
+        Random rnd = new Random();
+        String result = "";
+        for(int i = 0; i < length; ++i){
+            result += allowedChars.toCharArray()[rnd.nextInt(allowedChars.length())];
+        }
+
+        return result;
     }
 
     /** Checks if the user's is_admin field in the SQL table is true or false
