@@ -15,7 +15,7 @@ public class DriverRowMapper implements RowMapper<Driver> {
         driver.setDriverID(rs.getInt("driver_id"));
         driver.setFirstName(rs.getString("first_name"));
         driver.setLastName(rs.getString("last_name"));
-        driver.setLicenseNumber(rs.getString("licence_number"));
+        driver.setLicenseNumber(rs.getString("license_number"));
         driver.setPhoneNumber(rs.getString("phone"));
         driver.setEmailAddress(rs.getString("email"));
         driver.setAssignedVehicleLicense(rs.getString("assigned_vehicle"));

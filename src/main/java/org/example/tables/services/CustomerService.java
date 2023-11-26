@@ -32,8 +32,7 @@ public class CustomerService {
                 customer.getFullName(),
                 customer.getAddress(),
                 customer.getPhoneNumber(),
-                customer.getEmailAddress(),
-                customer.getPassword()
+                customer.getEmailAddress()
         );
 
         return update > 0;

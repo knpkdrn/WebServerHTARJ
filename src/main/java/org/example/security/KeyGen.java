@@ -51,5 +51,4 @@ public class KeyGen {
         String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
         System.out.println(encodedKey);
     }
-
 }

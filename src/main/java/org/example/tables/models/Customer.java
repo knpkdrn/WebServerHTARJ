@@ -6,7 +6,6 @@ public class Customer {
     private String address;
     private String phoneNumber;
     private String emailAddress;
-    private String password;
 
     public int getCustomerId() {
         return customerId;
@@ -23,9 +22,6 @@ public class Customer {
     public String getEmailAddress() {
         return emailAddress;
     }
-    public String getPassword() {
-        return password;
-    }
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
@@ -41,8 +37,5 @@ public class Customer {
     }
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
