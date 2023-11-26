@@ -49,7 +49,7 @@ public class VehicleController {
     }
 
     /** GET all vehicles */
-    @GetMapping("{apiKey}/getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<List<Vehicle>> getAllVehicle() {
         List<Vehicle> vehicles = vehicleService.getAll();
 
