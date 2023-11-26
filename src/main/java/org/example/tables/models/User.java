@@ -9,8 +9,10 @@ import java.util.Random;
 
 public class User {
     private String password;
+    private String username;
     private String email;
     private Boolean isAdmin;
+
 
     public void setPassword(String password) {
         this.password = password;
@@ -21,6 +23,9 @@ public class User {
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Boolean getIsAdmin() {
         return isAdmin;
@@ -30,6 +35,9 @@ public class User {
     }
     public String getEmail() {
         return email;
+    }
+    public String getUsername() {
+        return username;
     }
 
     public String generatePassword() {
@@ -47,15 +55,4 @@ public class User {
 
         return result;
     }
-
-    /** Checks if the user's is_admin field in the SQL table is true or false
-     * @return True: if the user is an admin. False: if the user is not an admin
-     * */
-    public static Boolean CheckIfAdmin(String apiKey) {
-        UserService userService = new UserService();
-        User user = userService.getByKey(apiKey);
-
-        return user != null;
-    }
-
 }

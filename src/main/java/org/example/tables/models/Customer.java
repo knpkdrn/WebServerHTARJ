@@ -7,7 +7,6 @@ public class Customer {
     private String phoneNumber;
     private String emailAddress;
     private String password;
-    private String apiKey;
 
     public int getCustomerId() {
         return customerId;

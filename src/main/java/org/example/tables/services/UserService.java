@@ -14,8 +14,9 @@ public class UserService {
     private JdbcTemplate jdbcTemplate;
 
     public boolean save(User user) {
-        String sql = "insert into drivers " +
+        String sql = "insert into users " +
                 "(email, " +
+                "username, " +
                 "password_, " +
                 "is_admin " +
                 "values (?, ?, ?, ?);";
@@ -23,6 +24,7 @@ public class UserService {
         int update = jdbcTemplate.update(
                 sql,
                 user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 user.getIsAdmin()
         );
@@ -30,8 +32,8 @@ public class UserService {
         return update > 0;
     }
 
-    public User getByKey(String key) {
-        String sql = "select * from users where api_key = ?";
-        return jdbcTemplate.queryForObject(sql, new UserRowMapper(), key);
+    public User getById(String email) {
+        String sql = "select * from users where email = ?";
+        return jdbcTemplate.queryForObject(sql, new UserRowMapper(), email);
     }
 }

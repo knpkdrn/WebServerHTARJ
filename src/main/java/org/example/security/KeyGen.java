@@ -52,25 +52,4 @@ public class KeyGen {
         System.out.println(encodedKey);
     }
 
-
-    public static String generateApiKey(List<User> users) {
-        Boolean unique = true;
-        String key;
-
-        while(true) {
-            key = UUID.randomUUID().toString();;
-            for (User u : users) {
-                if(u.getApiKey().equals(key)) {
-                    unique = false;
-                    break;
-                }
-            }
-            if(unique) {
-                break;
-            }
-            unique = true;
-        }
-
-        return key;
-    }
 }
