@@ -24,7 +24,6 @@ public class Vehicle {
     private Integer shipmentId; // This can be null, so use the Integer class
     private String vehicleStatus;
 
-
     public String getLicensePlate() {
         return licensePlate;
     }

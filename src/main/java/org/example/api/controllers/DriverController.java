@@ -1,10 +1,8 @@
 package org.example.api.controllers;
 
 import org.example.tables.models.Driver;
-import org.example.tables.models.RequestHistory;
 import org.example.tables.models.User;
 import org.example.tables.services.DriverService;
-import org.example.tables.services.RequestHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

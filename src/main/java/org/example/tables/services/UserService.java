@@ -15,15 +15,13 @@ public class UserService {
 
     public boolean save(User user) {
         String sql = "insert into drivers " +
-                "(api_key, " +
-                "email, " +
+                "(email, " +
                 "password_, " +
                 "is_admin " +
                 "values (?, ?, ?, ?);";
 
         int update = jdbcTemplate.update(
                 sql,
-                user.getApiKey(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getIsAdmin()

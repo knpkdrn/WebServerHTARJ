@@ -1,9 +1,7 @@
 package org.example.api.controllers;
 
-import org.example.tables.models.RequestHistory;
 import org.example.tables.models.User;
 import org.example.tables.models.Vehicle;
-import org.example.tables.services.RequestHistoryService;
 import org.example.tables.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,11 +29,10 @@ public class VehicleController {
         boolean success = vehicleService.save(vehicle);
 
        if(success) {
-           return ResponseEntity.status(HttpStatus.CREATED).body(vehicle);
+           return ResponseEntity.status(HttpStatus.OK).build();
        } else {
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
        }
-
     }
 
     /** GET vehicle by license_plate */
@@ -51,7 +48,7 @@ public class VehicleController {
     }
 
     /** GET all vehicles */
-    @GetMapping("{apiKey}/getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<List<Vehicle>> getAllVehicle() {
         List<Vehicle> vehicles = vehicleService.getAll();
 

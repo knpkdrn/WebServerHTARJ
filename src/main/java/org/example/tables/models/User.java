@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 public class User {
-    private String apiKey;
     private String password;
     private String email;
     private Boolean isAdmin;
@@ -22,9 +21,6 @@ public class User {
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
 
     public Boolean getIsAdmin() {
         return isAdmin;
@@ -34,9 +30,6 @@ public class User {
     }
     public String getEmail() {
         return email;
-    }
-    public String getApiKey() {
-        return apiKey;
     }
 
     public String generatePassword() {
