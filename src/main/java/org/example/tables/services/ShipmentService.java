@@ -53,6 +53,28 @@ public class ShipmentService {
         return  jdbcTemplate.query(sql, new ShipmentRowMapper());
     }
 
+    public List<Shipment> getByShipmentStatus(String status) {
+
+        String sql = "select * from shipment where shipment_status = ?";
+        return  jdbcTemplate.query(sql, new ShipmentRowMapper(), status);
+    }
+
+    public boolean updateShipmentStatusByOldStatus(String oldStatus, String newStatus) {
+        String sql = "update shipment set shipment_status = ? where shipment_status = ?";
+
+        try {
+
+            int affectedRows = jdbcTemplate.update(sql, newStatus, oldStatus);
+            return (affectedRows > 0);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public boolean deleteById(int shipmentId) {
         String sql = "delete from shipment where shipment_id = ?";
 
