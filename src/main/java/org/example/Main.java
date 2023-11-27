@@ -12,6 +12,7 @@ import org.example.security.KeyGen;
 import org.example.security.KeyStorage;
 import org.example.services.EmailService;
 import org.example.tables.models.User;
+import org.example.tables.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -25,6 +26,7 @@ public class Main {
         SpringApplication app = new SpringApplication(Main.class);
         ConfigurableApplicationContext context = app.run(args);
         EmailService emailService = context.getBean(EmailService.class);
+        UserService userService = context.getBean(UserService.class);
 
         try {
             if (Files.exists(Paths.get("this_is_definitely_not_the_first_part_of_the_master_key.dat")) &&
@@ -92,6 +94,8 @@ public class Main {
                     User user = new User();
                     System.out.print("email: ");
                     user.setEmail(scanner.nextLine());
+                    System.out.print("username: ");
+                    user.setUsername(scanner.nextLine());
                     System.out.print("isAdmin: ");
                     input = scanner.nextLine();
                     if("false".equalsIgnoreCase(input)) {
@@ -103,6 +107,8 @@ public class Main {
                     System.out.print("password: " + input);
                     user.setPassword(input);
                     System.out.println();
+
+                    userService.save(user);
 
                     emailService.sendEmail(user.getEmail(), user.getPassword());
 

@@ -21,7 +21,7 @@ public class ShipmentService {
                 "(shipment_id, " +
                 "customer_id, " +
                 "first_possible_start_time, " +
-                "last_possible_start_time, " +
+                "last_possible_service_time, " +
                 "origin, " +
                 "destination, " +
                 "shipment_status) " +

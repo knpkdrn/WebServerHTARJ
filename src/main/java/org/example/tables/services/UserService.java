@@ -18,7 +18,7 @@ public class UserService {
                 "(email, " +
                 "username, " +
                 "password_, " +
-                "is_admin " +
+                "is_admin) " +
                 "values (?, ?, ?, ?);";
 
         int update = jdbcTemplate.update(
@@ -35,5 +35,17 @@ public class UserService {
     public User getById(String email) {
         String sql = "select * from users where email = ?";
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), email);
+    }
+
+    public boolean updatePassword(String email, String password, Boolean wasLoggedIn) {
+        String sql = "update users set password_ = ? and was_logged_in = ? where email = ?";
+        return (jdbcTemplate.update(sql, password, wasLoggedIn, email) <= 1);
+    }
+
+
+
+    public User validateLogIn(String email, String password){
+        String sql = "select * from users where email = ? and password_ = ?";
+        return jdbcTemplate.queryForObject(sql, new UserRowMapper(), email, password);
     }
 }

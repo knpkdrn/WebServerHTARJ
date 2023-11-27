@@ -12,6 +12,7 @@ public class User {
     private String username;
     private String email;
     private Boolean isAdmin;
+    private Boolean wasLoggedIn;
 
 
     public void setPassword(String password) {
@@ -26,6 +27,9 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+    public void setWasLoggedIn(Boolean wasLoggedIn) {
+        this.wasLoggedIn = wasLoggedIn;
+    }
 
     public Boolean getIsAdmin() {
         return isAdmin;
@@ -38,6 +42,9 @@ public class User {
     }
     public String getUsername() {
         return username;
+    }
+    public Boolean getWasLoggedIn() {
+        return wasLoggedIn;
     }
 
     public String generatePassword() {
@@ -55,4 +62,8 @@ public class User {
 
         return result;
     }
+
+
+
+
 }
