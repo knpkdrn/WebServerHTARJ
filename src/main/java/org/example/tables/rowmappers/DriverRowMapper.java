@@ -12,7 +12,7 @@ public class DriverRowMapper implements RowMapper<Driver> {
     public Driver mapRow(ResultSet rs, int rowNum) throws SQLException {
         Driver driver = new Driver();
 
-        driver.setDriverID(rs.getInt("driver_id"));
+        driver.setDriverId(rs.getInt("driver_id"));
         driver.setFirstName(rs.getString("first_name"));
         driver.setLastName(rs.getString("last_name"));
         driver.setLicenseNumber(rs.getString("license_number"));

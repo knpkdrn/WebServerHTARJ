@@ -29,7 +29,7 @@ public class DriverService {
 
         int update = jdbcTemplate.update(
                 sql,
-                driver.getDriverID(),
+                driver.getDriverId(),
                 driver.getFirstName(),
                 driver.getLastName(),
                 driver.getLicenseNumber(),

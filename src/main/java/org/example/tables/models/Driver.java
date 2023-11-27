@@ -1,7 +1,7 @@
 package org.example.tables.models;
 
 public class Driver {
-    private int driverID;
+    private int driverId;
     private String firstName;
     private String lastName;
     private String licenseNumber;
@@ -9,8 +9,8 @@ public class Driver {
     private String emailAddress;
     private String assignedVehicleLicense;
 
-    public int getDriverID() {
-        return driverID;
+    public int getDriverId() {
+        return driverId;
     }
     public String getFirstName() {
         return firstName;
@@ -30,8 +30,8 @@ public class Driver {
     public String getAssignedVehicleLicense() {
         return assignedVehicleLicense;
     }
-    public void setDriverID(int driverID) {
-        this.driverID = driverID;
+    public void setDriverId(int driverID) {
+        this.driverId = driverID;
     }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
