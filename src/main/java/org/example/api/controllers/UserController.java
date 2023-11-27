@@ -30,10 +30,8 @@ public class UserController {
 
     @PutMapping("/updatePassword/{email}&{newPassword}")
     public ResponseEntity<User> changePassword(@PathVariable String email, @PathVariable String newPassword) {
-        User user = userService.getById(email);
-        user.setWasLoggedIn(true);
 
-        if(userService.updatePassword(email, newPassword, user.getWasLoggedIn())) {
+        if(userService.updatePassword(email, newPassword)) {
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

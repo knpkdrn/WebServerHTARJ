@@ -21,7 +21,7 @@ public class ShipmentService {
                 "(shipment_id, " +
                 "customer_id, " +
                 "first_possible_start_time, " +
-                "last_possible_service_time, " +
+                "last_possible_end_time, " +
                 "origin, " +
                 "destination, " +
                 "shipment_status) " +
@@ -75,20 +75,9 @@ public class ShipmentService {
         return false;
     }
 
-    public boolean deleteById(int shipmentId) {
+    public boolean deleteById(int id) {
         String sql = "delete from shipment where shipment_id = ?";
-
-        try {
-
-            int affectedRows = jdbcTemplate.update(sql, shipmentId);
-            return (affectedRows > 0);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-
-        return false;
+        return (jdbcTemplate.update(sql, id) <= 1);
     }
 
     public boolean deleteAll() {
