@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GoogleAPIController {
 
-    private static final String API_KEY = "AIzaSyCEhRZDgXI2xYen-eEvRzOj36Kp8r9HO4o";
+    private static final String API_KEY = ;
     public static String ORIGIN = "";
     public static String WAYPOINTS = "";
     public static List<Shipment> Calculate(List<Shipment> shipments){
